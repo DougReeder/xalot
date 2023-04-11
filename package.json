@@ -2,11 +2,11 @@
   "name": " ",
   "version": "0.0.1",
   "description": "",
-  "keywords": "",
+  "keywords": "GPL-3.0",
   "license": "",
   "author": "",
   "scripts": {
-    "build": "parcel build index.html",
+    "build": "mkdir -p dist/img && cp -p img/*.glb dist/img/; parcel build index.html",
     "dev": "parcel index.html --https --open",
     "start": "npm run build && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
