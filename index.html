@@ -1,0 +1,80 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>Xalot WebXR World</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+  <!-- Place favicon.ico in the root directory -->
+<!--  <script src="https://unpkg.com/@croquet/croquet"></script>-->
+  <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+<!--  <script src="./lib/aframe-croquet-component.js"></script>-->
+  <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
+  <!--  <script src="https://cdn.jsdelivr.net/gh/dougreeder/aframe-extras@052a1f4617f606e951650810cff116e404b886e5/dist/aframe-extras.controls.js"></script>-->
+  <script src="https://unpkg.com/aframe-atoll-terrain@^0.7.0/dist/aframe-atoll-terrain.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/a-super-sky@1.1.1/super-sky.js"></script>
+  <script>
+    AFRAME.registerComponent('place-rig', {
+      init: function () {
+        const terrainGeometry = this.el.querySelector('a-atoll-terrain').getAttribute('geometry');
+
+        const rigEl = document.getElementById('rig');
+        const rigPosition = rigEl.getAttribute('position');
+        rigPosition.y = terrainGeometry.getElevation(rigPosition.x, rigPosition.z) + 1.6;
+
+        const sphereEl = document.querySelector('a-sphere');
+        const spherePosition = sphereEl.getAttribute('position');
+        spherePosition.y = terrainGeometry.getElevation(spherePosition.x, spherePosition.z) + 1.6;
+      }
+    });
+
+    AFRAME.registerComponent('track-sun', {
+      init: function () {
+        this.superSky = document.querySelector('a-super-sky');
+        this.atollTerrain = document.querySelector('a-atoll-terrain');
+      },
+
+      tick: function (time) {
+        const sunPosition = this.superSky.getAttribute('material').sunPosition;
+        const positionStr = sunPosition.x + ' ' + sunPosition.y + ' ' + sunPosition.z;
+        // console.log(positionStr);
+        this.atollTerrain.setAttribute('sun-position', positionStr);
+      }
+    });
+  </script>
+</head>
+
+<body>
+<a-scene place-rig track-sun>
+  <a-sphere position="0 11.6 -5" radius="0.6" color="#EF2D5E" shadow></a-sphere>
+  <!-- terrain which is likely to have a good vista from the plateau, and runs ok on mobile -->
+  <a-atoll-terrain id="atoll" mean-elevation="3"
+                   plateau-radius="10" plateau-elevation-min="15"
+                   middle-radius="80" unit-size="4" far="1900"
+                   sun-position="0.8 0.6 0"
+                   flat-shading="false">
+  </a-atoll-terrain>
+  <a-super-sky orbitduration="1" groundcolor="#528d04" sunbeamTarget="#camera"></a-super-sky>
+
+  <!-- camera rig -->
+  <a-entity id="rig">
+    <!-- camera -->
+    <a-entity id="camera" camera wasd-controls look-controls></a-entity>
+    <!-- hand controls -->
+    <a-entity id="left-hand" oculus-touch-controls="hand: left"
+              blink-controls="cameraRig: #rig; teleportOrigin: #camera; collisionEntities: #atoll; button: trigger; rotateOnTeleport: false;"></a-entity>
+    <a-entity id="right-hand" oculus-touch-controls="hand: right"></a-entity>
+  </a-entity>
+</a-scene>
+</body>
+
+</html>
