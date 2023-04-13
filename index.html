@@ -17,15 +17,15 @@
   <!-- Place favicon.ico in the root directory -->
   <script src="https://unpkg.com/@croquet/croquet"></script>
   <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
-  <script src="./aframe-croquet-component.js"></script>
+<!--  <script src="./aframe-croquet-component.js"></script>-->
+  <script src="https://cdn.jsdelivr.net/gh/NikolaySuslov/aframe-croquet-component/public/lib/aframe-croquet-component.js"></script>
 <!--  <script src="https://unpkg.com/aframe-croquet-component/public/lib/aframe-croquet-component.js"></script>-->
   <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@fb96ab2/dist/aframe-extras.min.js"></script>
-  <script src="./aframe-atoll-terrain.js"></script>
-<!--  <script src="https://unpkg.com/aframe-atoll-terrain@^0.7.0/dist/aframe-atoll-terrain.js"></script>-->
+  <script src="https://unpkg.com/aframe-atoll-terrain@^1.0.0/dist/aframe-atoll-terrain.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/a-super-sky@1.1.1/super-sky.js"></script>
   <script>
-    AFRAME.registerComponent('generate-and-place', {
+    AFRAME.registerComponent('generate-terrain', {
       init: function () {
         const superSkyEl = document.createElement('a-super-sky');
         superSkyEl.setAttribute('orbitduration', "1");
@@ -51,60 +51,18 @@
         // terrain which is likely to have a good vista from the plateau, and runs ok on mobile
         const terrainEl = document.createElement('a-atoll-terrain');
         terrainEl.setAttribute('id', "atoll");
-        terrainEl.setAttribute('mean-elevation', "3");
         terrainEl.setAttribute('plateau-radius', "3");
-        terrainEl.setAttribute('plateau-elevation-min', "15");
+        terrainEl.setAttribute('plateau-elevation', "5");
         terrainEl.setAttribute('middle-radius', "80");
         terrainEl.setAttribute('unit-size', "4");
         terrainEl.setAttribute('far', "1000");
         terrainEl.setAttribute('flat-shading', "false");
         terrainEl.setAttribute('seed', seed);
-        AFRAME.scenes[0].appendChild(terrainEl);
+        this.el.appendChild(terrainEl);
 
-        const waitForAvatar = () => {
-          const localAvatarEl = document.querySelector('[data-is-local-avatar]');
-          if (localAvatarEl) {
-            this.place(localAvatarEl);
-          } else {
-            setTimeout(waitForAvatar, 100);
-          }
-        }
-        waitForAvatar();
+        // Until atoll-terrain exists, there's no need to track the sun.
+        this.el.setAttribute('track-sun', '');
       },
-
-      place: function (localAvatarEl) {
-        const terrainGeometry = document.querySelector('a-atoll-terrain').getAttribute('geometry');
-
-        try {
-          const croquetComp = AFRAME.scenes[0].getAttribute('croquet');
-          const spawnPoint = croquetComp.spawnPoint;
-          spawnPoint.y = terrainGeometry.getElevation(spawnPoint.x, spawnPoint.z);
-          AFRAME.scenes[0].setAttribute('croquet', 'spawnPoint', spawnPoint);
-
-          const rigEl = document.getElementById('rig');
-          const rigPosition = rigEl.getAttribute('position');
-          if (rigPosition.y >= 99) {
-            rigPosition.y = terrainGeometry.getElevation(rigPosition.x, rigPosition.z);
-            rigEl.setAttribute('position', rigPosition);
-            console.debug(`lowering rig altitude to`, rigPosition);
-          }
-
-          const avatarPosition = localAvatarEl.getAttribute('position');
-          if (avatarPosition.y >= 99) {
-            avatarPosition.y = terrainGeometry.getElevation(avatarPosition.x, avatarPosition.z);
-            localAvatarEl.setAttribute('position', avatarPosition);
-            console.debug(`lowering avatar altitude to`, avatarPosition);
-          }
-        } catch (err) {
-          console.error(`While lowering rig & avatar:`, err);
-        }
-
-        const sphereEl = document.querySelector('a-sphere');
-        const spherePosition = sphereEl.getAttribute('position');
-        spherePosition.y = terrainGeometry.getElevation(spherePosition.x, spherePosition.z) + 1.6;
-
-        AFRAME.scenes[0].setAttribute('track-sun');
-      }
     });
 
     AFRAME.registerComponent('track-sun', {
@@ -125,12 +83,12 @@
 </head>
 
 <body>
-<a-scene croquet="spawnPoint: 0 100 0; apiKey: 1psHtNLMJ94kFNzLqmPoFpt3HJGtp7zrgf77A72r1" generate-and-place>
+<a-scene croquet="spawnPoint: 0 5 0; apiKey: 1psHtNLMJ94kFNzLqmPoFpt3HJGtp7zrgf77A72r1" generate-terrain>
   <a-assets>
     <a-asset-item id="avatarModel" src="img/daruma_doll.glb"></a-asset-item>
   </a-assets>
 
-  <a-sphere position="0 11.6 0" radius="0.6" color="purple" shadow></a-sphere>
+  <a-sphere position="0 6.0 0" radius="0.3" color="purple" shadow></a-sphere>
 
   <!-- atoll requires random seed from Croquet -->
   <!-- super-sky requires calculating where in the cycle to start -->
@@ -138,7 +96,7 @@
   <a-entity light="type: ambient; color: #404040"></a-entity>
 
   <!-- camera rig -->
-  <a-entity id="rig" movement-controls="fly:true; speed:0.6;">
+  <a-entity id="rig" movement-controls="fly:true; speed:0.3;" position="0 5 -2">
     <!-- camera -->
     <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
     <!-- hand controls -->

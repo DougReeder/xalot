@@ -1,1 +1,0 @@
-../aframe-croquet-component/public/lib/aframe-croquet-component.js
