@@ -102,9 +102,12 @@
     <!-- camera -->
     <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
     <!-- hand controls -->
-    <a-entity id="left-hand" oculus-touch-controls="hand: left"
-              blink-controls="cameraRig: #rig; teleportOrigin: #camera; collisionEntities: .teleport; button: trigger; rotateOnTeleport: false;"></a-entity>
-    <a-entity id="right-hand" oculus-touch-controls="hand: right"></a-entity>
+    <a-entity id="left-hand"
+              hand-controls="hand: left; color: gray; handModelStyle: highPoly;"
+              blink-controls="cameraRig: #rig; teleportOrigin: #camera; collisionEntities: .teleport; button: trigger; rotateOnTeleport: false; curveShootingSpeed: 10; incrementalDrawMs: 300;"></a-entity>
+    <a-entity id="right-hand"
+              hand-controls="hand: right; color: gray; handModelStyle: highPoly;">
+    </a-entity>
   </a-entity>
 </a-scene>
 
