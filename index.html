@@ -51,7 +51,8 @@
         // terrain which is likely to have a good vista from the plateau, and runs ok on mobile
         const terrainEl = document.createElement('a-atoll-terrain');
         terrainEl.setAttribute('id', "atoll");
-        terrainEl.setAttribute('plateau-radius', "3");
+        terrainEl.classList.add('teleport');
+        terrainEl.setAttribute('plateau-radius', "4");
         terrainEl.setAttribute('plateau-elevation', "5");
         terrainEl.setAttribute('middle-radius', "80");
         terrainEl.setAttribute('unit-size', "4");
@@ -83,25 +84,26 @@
 </head>
 
 <body>
-<a-scene croquet="spawnPoint: 0 5 0; apiKey: 1psHtNLMJ94kFNzLqmPoFpt3HJGtp7zrgf77A72r1" generate-terrain>
+<a-scene croquet="spawnPoint: 0 5.75 0; apiKey: 1psHtNLMJ94kFNzLqmPoFpt3HJGtp7zrgf77A72r1" generate-terrain>
   <a-assets>
+    <a-asset-item id="gazebo" src="img/garden-gazebo/source/kiosko botanica.glb"></a-asset-item>
     <a-asset-item id="avatarModel" src="img/daruma_doll.glb"></a-asset-item>
   </a-assets>
 
-  <a-sphere position="0 6.0 0" radius="0.3" color="purple" shadow></a-sphere>
+  <a-entity class="teleport" gltf-model="#gazebo" scale="15 15 15" position="0 9.125 -3.75" rotation="4 0 2"></a-entity>
 
   <!-- atoll requires random seed from Croquet -->
   <!-- super-sky requires calculating where in the cycle to start -->
 
-  <a-entity light="type: ambient; color: #404040"></a-entity>
+  <a-entity light="type: hemisphere; color: #404040"></a-entity>
 
   <!-- camera rig -->
-  <a-entity id="rig" movement-controls="fly:true; speed:0.3;" position="0 5 -2">
+  <a-entity id="rig" movement-controls="fly:true; speed:0.3;" position="0 5.75 -2">
     <!-- camera -->
     <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
     <!-- hand controls -->
     <a-entity id="left-hand" oculus-touch-controls="hand: left"
-              blink-controls="cameraRig: #rig; teleportOrigin: #camera; collisionEntities: #atoll; button: trigger; rotateOnTeleport: false;"></a-entity>
+              blink-controls="cameraRig: #rig; teleportOrigin: #camera; collisionEntities: .teleport; button: trigger; rotateOnTeleport: false;"></a-entity>
     <a-entity id="right-hand" oculus-touch-controls="hand: right"></a-entity>
   </a-entity>
 </a-scene>

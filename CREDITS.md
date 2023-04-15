@@ -9,6 +9,8 @@ Most code by Doug Reeder
 
 "Daruma doll" (https://skfb.ly/oEJJQ) by Jan is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
 
+"garden gazebo" (https://skfb.ly/onSEK) by aayala2606 is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/).
+
 ## Textures
 
 

@@ -6,7 +6,7 @@
   "license": "",
   "author": "",
   "scripts": {
-    "build": "mkdir -p dist/img && cp -p img/*.glb dist/img/; parcel build index.html",
+    "build": "mkdir -p dist/img && cp -rp img/* dist/img/; parcel build index.html",
     "dev": "parcel index.html --https --open",
     "start": "npm run build && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
