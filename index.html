@@ -84,21 +84,21 @@
 </head>
 
 <body>
-<a-scene croquet="spawnPoint: 0 5.75 0; apiKey: 1psHtNLMJ94kFNzLqmPoFpt3HJGtp7zrgf77A72r1" generate-terrain>
+<a-scene croquet="spawnPoint: 0 5.28 0; apiKey: 1psHtNLMJ94kFNzLqmPoFpt3HJGtp7zrgf77A72r1" generate-terrain>
   <a-assets>
-    <a-asset-item id="gazebo" src="img/garden-gazebo/source/kiosko botanica.glb"></a-asset-item>
+    <a-asset-item id="gazebo" src="img/pentagonal-gazebo.glb"></a-asset-item>
     <a-asset-item id="avatarModel" src="img/daruma_doll.glb"></a-asset-item>
   </a-assets>
 
-  <a-entity class="teleport" gltf-model="#gazebo" scale="15 15 15" position="0 9.125 -3.75" rotation="4 0 2"></a-entity>
+  <a-entity class="teleport" gltf-model="#gazebo" scale="1 1 1" position="0.2 5.68 -0.1" rotation="0 0 0"></a-entity>
 
   <!-- atoll requires random seed from Croquet -->
   <!-- super-sky requires calculating where in the cycle to start -->
 
-  <a-entity light="type: hemisphere; color: #404040"></a-entity>
+  <a-entity light="type: hemisphere; color: #303030"></a-entity>
 
   <!-- camera rig -->
-  <a-entity id="rig" movement-controls="fly:true; speed:0.3;" position="0 5.75 -2">
+  <a-entity id="rig" movement-controls="fly:true; speed:0.3;" position="0 5.28 -2">
     <!-- camera -->
     <a-entity id="camera" camera look-controls position="0 1.6 0"></a-entity>
     <!-- hand controls -->
